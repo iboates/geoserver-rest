@@ -34,5 +34,9 @@ jobs:
 
     - name: Test with pytest
       run: |
+        sudo apt-add-repository ppa:ubuntugis/ubuntugis-unstable
+        sudo apt-get update
+        sudo apt-get install gdal-bin libgdal-dev
+        pip install GDAL==`gdal-config --version` 
         docker compose -f tests/docker-compose.yaml up -d
         pytest ./tests
