@@ -38,5 +38,6 @@ jobs:
 
     - name: Test with pytest
       run: |
+        export DB_HOST=postgis
         docker compose -f tests/docker-compose.yaml up -d
         pytest ./tests
