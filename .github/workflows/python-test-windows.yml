@@ -26,7 +26,7 @@ jobs:
       - name: Install dependencies
         run: |
           curl -O https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-Windows-x86_64.exe
-          start /wait "" Miniconda3-py39_4.10.3-Windows-x86_64.exe /InstallationType=JustMe /RegisterPython=0 /S /D=%UserProfile%\Miniconda3
+          Miniconda3-py39_4.10.3-Windows-x86_64.exe /InstallationType=JustMe /RegisterPython=0 /S /D=%UserProfile%\Miniconda3
           %UserProfile%\Miniconda3\Scripts\conda init
           conda update conda
           conda create -n geospatial python=3.10
