@@ -20,6 +20,8 @@ jobs:
 
       - name: Set up PostGIS
         run: |
+          
+          # Install PostGIS (PostgreSQL comes on the GitHub Actions runner by default but lacks PostGIS control files and dependencies) 
           Invoke-WebRequest -Uri "http://download.osgeo.org/postgis/windows/pg14/postgis-bundle-pg14x64-setup-3.4.1-1.exe" -OutFile "postgis-installer.exe"
           Start-Process "postgis-installer.exe" -ArgumentList "/S /D=C:\Program Files\PostgreSQL\14" -Wait -NoNewWindow
           & "C:\Program Files\PostgreSQL\14\bin\pg_ctl.exe" -D "C:\Program Files\PostgreSQL\14\data" start
@@ -48,11 +50,12 @@ jobs:
           cp C:\GeoServer\geoserver.war C:\Tomcat\webapps\geoserver.war
           dir C:\Tomcat\webapps
           
-          # Set env vars for Tomcat and run it
+          # Set env vars for Tomcat and run it (it takes a little while, so wait 30 seconds after)
           $env:CATALINA_BASE = "C:\Tomcat"
           $env:CATALINA_HOME = "C:\Tomcat"
           $env:CATALINA_TMPDIR = "C:\Tomcat\temp"
           C:\Tomcat\bin\startup.sh
+          Start-Sleep -Seconds 30
           
           # Verify Something is on port 8080
           Get-NetTCPConnection | Where-Object { $_.LocalPort -eq 8080 }
