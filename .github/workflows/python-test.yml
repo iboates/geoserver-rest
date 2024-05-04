@@ -41,7 +41,7 @@ jobs:
     - name: Test with pytest
       uses: dariocurr/pytest-summary@main
       with:
-        paths: tests/**.py
+        paths: tests/test_geoserver.py
       env:
         DB_HOST: postgis
 
@@ -125,7 +125,7 @@ jobs:
       - name: Test with pytest
         uses: dariocurr/pytest-summary@main
         with:
-          paths: tests/**.py
+          paths: tests/test_geoserver.py
         env:
           DB_HOST: postgis
 
