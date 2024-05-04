@@ -33,7 +33,7 @@ jobs:
           netsh advfirewall firewall add rule name="Allow Localhost 8080" dir=in action=allow protocol=TCP localport=8080
           netsh advfirewall firewall show rule name="Allow Localhost 8080"
           
-          curl -L https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.23/bin/apache-tomcat-10.1.23-windows-x64.zip -o tomcat.zip
+          curl -L https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.88/bin/apache-tomcat-9.0.88-windows-x64.zip -o tomcat.zip
           Expand-Archive -Path tomcat.zip -DestinationPath "C:\"
           
           $directory = Get-ChildItem -Path "C:\" -Directory | Where-Object { $_.Name -like "*apache-tomcat*" } | Select-Object -First 1
