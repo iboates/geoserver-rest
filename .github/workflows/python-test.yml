@@ -2,9 +2,9 @@ name: Test on Linux (Ubuntu)
 
 on:
   push:
-    branches: [ ]
+    branches: [ "master", "tests" ]
   pull_request:
-    branches: [ ]
+    branches: [ "master", "tests" ]
 
 permissions:
   contents: read
@@ -31,6 +31,7 @@ jobs:
         pip install -r requirements_dev.txt
 
     - name: Test with pytest
+      uses: dariocurr/pytest-summary@main
       run: |
         export DB_HOST=postgis
         docker compose -f tests/docker-compose.yaml up -d
