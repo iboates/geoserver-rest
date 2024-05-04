@@ -34,8 +34,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements_dev.txt
 
-    
-
     - name: Test with pytest
       run: |
         export DB_HOST=postgis
@@ -116,7 +114,6 @@ jobs:
         shell: pwsh
 
       - name: Run pytest
-        uses: dariocurr/pytest-summary@main
         run: |
           set DB_HOST=localhost
           conda activate geospatial
