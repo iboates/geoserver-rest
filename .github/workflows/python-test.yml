@@ -38,10 +38,6 @@ jobs:
         docker compose -f tests/docker-compose.yaml up -d
         sleep 60  # Geoserver takes quite a long time to boot up and there is no healthcheck
 
-    - name: Test with pytest (basic)
-      run: |
-        pytest ./tests
-
     - name: Test with pytest
       uses: dariocurr/pytest-summary@main
       with:
