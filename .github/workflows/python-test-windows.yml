@@ -18,23 +18,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # - name: Set up PostGIS
-      #   run: |
-      #
-      #     # Install PostGIS (PostgreSQL comes on the GitHub Actions runner by default but lacks PostGIS control files and dependencies)
-      #     Invoke-WebRequest -Uri "http://download.osgeo.org/postgis/windows/pg14/postgis-bundle-pg14x64-setup-3.4.1-1.exe" -OutFile "postgis-installer.exe"
-      #     Start-Process "postgis-installer.exe" -ArgumentList "/S /D=C:\Program Files\PostgreSQL\14" -Wait -NoNewWindow
-      #     & "C:\Program Files\PostgreSQL\14\bin\pg_ctl.exe" -D "C:\Program Files\PostgreSQL\14\data" start
-      #     & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "CREATE DATABASE geodb;"
-      #     & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "CREATE USER geodb_user WITH ENCRYPTED PASSWORD 'geodb_pass';"
-      #     & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE geodb TO geodb_user;"
-      #     & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -d geodb -c "CREATE EXTENSION postgis;"
+      - name: Set up PostGIS
+        run: |
+      
+          # Install PostGIS (PostgreSQL comes on the GitHub Actions runner by default but lacks PostGIS control files and dependencies)
+          netsh advfirewall firewall add rule name="Allow Localhost 8080" dir=in action=allow protocol=TCP localport=8080
+          netsh advfirewall firewall show rule name="Allow Localhost 5432"
+          Invoke-WebRequest -Uri "http://download.osgeo.org/postgis/windows/pg14/postgis-bundle-pg14x64-setup-3.4.1-1.exe" -OutFile "postgis-installer.exe"
+          Start-Process "postgis-installer.exe" -ArgumentList "/S /D=C:\Program Files\PostgreSQL\14" -Wait -NoNewWindow
+          & "C:\Program Files\PostgreSQL\14\bin\pg_ctl.exe" -D "C:\Program Files\PostgreSQL\14\data" start
+          & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "CREATE DATABASE geodb;"
+          & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "CREATE USER geodb_user WITH ENCRYPTED PASSWORD 'geodb_pass';"
+          & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE geodb TO geodb_user;"
+          & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -d geodb -c "CREATE EXTENSION postgis;"
 
       - name: Set up Tomcat/GeoServer
         run: |
           
           # Configure firewall to allow connectiosn to localhost port 8080 (might not be necessary)
-          netsh advfirewall firewall add rule name="Allow Localhost 8080" dir=in action=allow protocol=TCP localport=8080
+          netsh advfirewall firewall add rule name="Allow Localhost 5432" dir=in action=allow protocol=TCP localport=5432
           netsh advfirewall firewall show rule name="Allow Localhost 8080"
           
           # Download and install Apache Tomcat (need version 9 because the JRE on the GitHub Actions runner is incompatible with 10+)
