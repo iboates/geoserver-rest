@@ -1,0 +1,40 @@
+name: Test on Windows
+
+on:
+  push:
+    branches: [ "master", "tests" ]
+  pull_request:
+    branches: [ "master", "tests" ]
+
+jobs:
+  test:
+
+    strategy:
+      matrix:
+        os: [windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          conda create -n geospatial python=3.10
+          conda activate geospatial
+          conda install -c conda-forge gdal>=3.4.1
+          python -m pip install --upgrade pip
+          pip install -r requirements_dev.txt
+
+      - name: Test on ${{ matrix.os }}
+        run: |
+          set DB_HOST=postgis
+          docker compose -f tests/docker-compose.yaml up -d
+          conda activate geospatial
+          sleep 60  # Geoserver takes quite a long time to boot up and there is no healthcheck
+          pytest ./tests
