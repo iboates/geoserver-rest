@@ -26,9 +26,9 @@ postgis_params_local_override = {
 postgis_params_local = {**postgis_params, **postgis_params_local_override}
 
 logger.info("postgis_params (relative to geoserver instance):")
-for k, v in postgis_params:
+for k, v in postgis_params.items():
     logger.info(f"\t{k}: {v}")
 
 logger.info("postgis_params_local (relative to test machine):")
-for k, v in postgis_params_local:
+for k, v in postgis_params_local.items():
     logger.info(f"\t{k}: {v}")
