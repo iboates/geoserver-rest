@@ -45,6 +45,13 @@ jobs:
           $env:CATALINA_HOME = "C:\Tomcat"
           $env:CATALINA_TMPDIR = "C:\Tomcat\temp"
           C:\Tomcat\bin\startup.bat
+          
+          $response = Invoke-WebRequest -Uri "http://localhost:8080"
+          Write-Output $response.Content
+          
+          $response = Invoke-WebRequest -Uri "http://localhost:8080/geoserver"
+          Write-Output $response.Content
+
         shell: pwsh
 
       - name: Set up Python 3.10
@@ -70,7 +77,7 @@ jobs:
           pip install -r requirements_dev.txt
         shell: pwsh
 
-      - name: Test on ${{ matrix.os }}
+      - name: Run pytest
         run: |
           set DB_HOST=localhost
           conda activate geospatial
