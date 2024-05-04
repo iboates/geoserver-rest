@@ -37,7 +37,7 @@ jobs:
 
       - name: Set up GeoServer
         run: |
-          wget -o geoserver.zip "https://altushost-swe.dl.sourceforge.net/project/geoserver/GeoServer/2.24.3/geoserver-2.24.3-war.zip?viasf=1"
+          curl -L -O geoserver.zip "https://sourceforge.net/projects/geoserver/files/latest/download"
           Expand-Archive -Path geoserver.zip -DestinationPath "C:\GeoServer"
           java -jar "C:\GeoServer\webapps\geoserver\WEB-INF\lib\start.jar"
         shell: pwsh
