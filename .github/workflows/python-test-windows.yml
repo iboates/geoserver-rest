@@ -27,6 +27,8 @@ jobs:
         run: |
           .\postgresql-installer.exe --mode unattended --unattendedmodeui none --superpassword "geodb_pass" --serverport 5432 --install_runtimes 1
           dir "C:\Program Files"
+          dir "C:\Program Files\PostgreSQL"
+          dir "C:\Program Files\PostgreSQL\bin"
 
       - name: Setup Database and User
         run: |
