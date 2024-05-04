@@ -26,14 +26,16 @@ jobs:
       - name: Install dependencies
         run: |
           curl -O https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-Windows-x86_64.exe
-          Miniconda3-py39_4.10.3-Windows-x86_64.exe /InstallationType=JustMe /RegisterPython=0 /S /D=%UserProfile%\Miniconda3
-          %UserProfile%\Miniconda3\Scripts\conda init
+          $installerPath = "./Miniconda3-py39_4.10.3-Windows-x86_64.exe"
+          Start-Process -FilePath $installerPath -ArgumentList '/InstallationType=JustMe /RegisterPython=0 /S /D="%UserProfile%\Miniconda3"' -Wait -NoNewWindow
+          & "$env:UserProfile\Miniconda3\Scripts\conda" init
           conda update conda
           conda create -n geospatial python=3.10
           conda activate geospatial
           conda install -c conda-forge gdal>=3.4.1
           python -m pip install --upgrade pip
           pip install -r requirements_dev.txt
+        shell: pwsh
 
       - name: Test on ${{ matrix.os }}
         run: |
