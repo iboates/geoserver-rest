@@ -18,19 +18,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install PostgreSQL
+      - name: Setup Database and User
         run: |
           dir "C:\Program Files"
           dir "C:\Program Files\PostgreSQL"
           dir "C:\Program Files\PostgreSQL\14"
           dir "C:\Program Files\PostgreSQL\14\bin"
-
-      - name: Setup Database and User
-        run: |
+          dir "C:\Program Files\PostgreSQL\14\share\extension"
           & "C:\Program Files\PostgreSQL\14\bin\pg_ctl.exe" -D "C:\Program Files\PostgreSQL\14\data" start
           & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "CREATE DATABASE geodb;"
           & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "CREATE USER geodb_user WITH ENCRYPTED PASSWORD 'geodb_pass';"
-          & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE yourDatabaseName TO geodb_user;"
+          & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE geodb TO geodb_user;"
           & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -d geodb -c "CREATE EXTENSION postgis;"
 
       - name: Set up GeoServer
