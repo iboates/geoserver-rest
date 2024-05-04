@@ -27,7 +27,7 @@ jobs:
         run: |
           curl -O https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-Windows-x86_64.exe
           Start-Process -FilePath "Miniconda3-py39_4.10.3-Windows-x86_64.exe" -ArgumentList '/InstallationType=JustMe /RegisterPython=0 /S /D="%UserProfile%\Miniconda3"' -Wait -NoNewWindow
-          & "$env:UserProfile\Miniconda3\Scripts\conda" init PowerShell
+          & "$env:UserProfile\Miniconda3\Scripts\conda" init powershell
         shell: pwsh
 
       - name: Configure Conda environment
