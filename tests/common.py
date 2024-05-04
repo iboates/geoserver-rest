@@ -1,10 +1,6 @@
 import os
-import logging
-logging.basicConfig(level=logging.INFO)
 
 from geo.Geoserver import Geoserver
-
-logger = logging.getLogger(__name__)
 
 GEO_URL = os.getenv("GEO_URL", "http://localhost:8080/geoserver")  # relative to test machine
 
@@ -24,11 +20,3 @@ postgis_params_local_override = {
     "port": os.getenv("DB_PORT_LOCAL", "5432"),  # relative to the test machine
 }
 postgis_params_local = {**postgis_params, **postgis_params_local_override}
-
-logger.critical("postgis_params (relative to geoserver instance):")
-for k, v in postgis_params.items():
-    logger.critical(f"\t{k}: {v}")
-
-logger.critical("postgis_params_local (relative to test machine):")
-for k, v in postgis_params_local.items():
-    logger.critical(f"\t{k}: {v}")

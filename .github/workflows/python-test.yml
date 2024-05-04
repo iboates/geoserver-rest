@@ -21,6 +21,7 @@ jobs:
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
+        cache: 'pip'
         python-version: '3.10'
 
     - name: Install dependencies
@@ -31,10 +32,10 @@ jobs:
         pip install GDAL==`gdal-config --version` 
         python -m pip install --upgrade pip
         pip install -r requirements_dev.txt
+        export DB_HOST=postgis
 
     - name: Set up docker-compose
       run: |
-        export DB_HOST=postgis
         docker compose -f tests/docker-compose.yaml up -d
         sleep 60  # Geoserver takes quite a long time to boot up and there is no healthcheck
 
