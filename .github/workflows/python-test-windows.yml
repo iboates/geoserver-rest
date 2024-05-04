@@ -30,10 +30,10 @@ jobs:
 
       - name: Setup Database and User
         run: |
-          & "psql.exe" -U postgres -c "CREATE DATABASE geodb;"
-          & "psql.exe" -U postgres -c "CREATE USER geodb_user WITH ENCRYPTED PASSWORD 'geodb_pass';"
-          & "psql.exe" -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE yourDatabaseName TO geodb_user;"
-          & "psql.exe" -U postgres -d yourDatabaseName -c "CREATE EXTENSION postgis;"
+          psql -U postgres -c "CREATE DATABASE geodb;"
+          psql -U postgres -c "CREATE USER geodb_user WITH ENCRYPTED PASSWORD 'geodb_pass';"
+          psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE yourDatabaseName TO geodb_user;"
+          psql -U postgres -d yourDatabaseName -c "CREATE EXTENSION postgis;"
 
       - name: Set up GeoServer
         run: |
@@ -67,8 +67,6 @@ jobs:
 
       - name: Test on ${{ matrix.os }}
         run: |
-          set DB_HOST=postgis
-          docker compose -f tests/docker-compose.yaml up -d
+          set DB_HOST=localhost
           conda activate geospatial
-          sleep 60  # Geoserver takes quite a long time to boot up and there is no healthcheck
           pytest ./tests
