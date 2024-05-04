@@ -24,7 +24,11 @@ jobs:
           dir "C:\Program Files\PostgreSQL"
           dir "C:\Program Files\PostgreSQL\14"
           dir "C:\Program Files\PostgreSQL\14\bin"
+          
+          Invoke-WebRequest -Uri "http://download.osgeo.org/postgis/windows/pg14/postgis-bundle-pg14x64-setup-3.4.1-1.exe" -OutFile "postgis-installer.exe"
+          Start-Process "postgis-installer.exe" -ArgumentList "/S /D=C:\Program Files\PostgreSQL\14" -Wait -NoNewWindow
           dir "C:\Program Files\PostgreSQL\14\share\extension"
+          
           & "C:\Program Files\PostgreSQL\14\bin\pg_ctl.exe" -D "C:\Program Files\PostgreSQL\14\data" start
           & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "CREATE DATABASE geodb;"
           & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "CREATE USER geodb_user WITH ENCRYPTED PASSWORD 'geodb_pass';"
@@ -33,7 +37,7 @@ jobs:
 
       - name: Set up GeoServer
         run: |
-          Invoke-WebRequest -Uri "https://sourceforge.net/projects/geoserver/files/GeoServer/2.18.2/geoserver-2.18.2-war.zip" -OutFile "geoserver.zip"
+          Invoke-WebRequest -Uri "https://sourceforge.net/projects/geoserver/files/GeoServer/2.24.3/geoserver-2.24.3-war.zip" -OutFile "geoserver.zip"
           Expand-Archive -Path geoserver.zip -DestinationPath "C:\GeoServer"
           java -jar "C:\GeoServer\webapps\geoserver\WEB-INF\lib\start.jar"
         shell: pwsh
