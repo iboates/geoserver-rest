@@ -27,6 +27,7 @@ jobs:
 
       - name: Setup Database and User
         run: |
+          & "C:\Program Files\PostgreSQL\14\bin\pg_ctl.exe" -D "C:\Program Files\PostgreSQL\14\data" start
           & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "CREATE DATABASE geodb;"
           & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "CREATE USER geodb_user WITH ENCRYPTED PASSWORD 'geodb_pass';"
           & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE yourDatabaseName TO geodb_user;"
