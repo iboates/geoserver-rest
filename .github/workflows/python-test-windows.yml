@@ -48,7 +48,7 @@ jobs:
           $env:CATALINA_BASE = "C:\Tomcat"
           $env:CATALINA_HOME = "C:\Tomcat"
           $env:CATALINA_TMPDIR = "C:\Tomcat\temp"
-          C:\Tomcat\bin\catalina.bat
+          C:\Tomcat\bin\catalina.bat run
           
           Get-NetTCPConnection | Where-Object { $_.LocalPort -eq 8080 }
           
