@@ -41,6 +41,9 @@ jobs:
           Expand-Archive -Path geoserver.zip -DestinationPath "C:\GeoServer"
           dir C:\GeoServer
           cp C:\GeoServer\geoserver.war C:\Tomcat\webapps\geoserver.war
+          $env:CATALINA_BASE = "C:\Tomcat"
+          $env:CATALINA_HOME = "C:\Tomcat"
+          $env:CATALINA_TMPDIR = "C:\Tomcat\temp"
           C:\Tomcat\bin\startup.bat
         shell: pwsh
 
