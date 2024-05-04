@@ -18,18 +18,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download PostgreSQL Installer
-        run: |
-          Invoke-WebRequest -Uri "https://get.enterprisedb.com/postgresql/postgresql-13.3-2-windows-x64.exe" -OutFile "postgresql-installer.exe"
-        shell: pwsh
+#      - name: Download PostgreSQL Installer
+#        run: |
+#          Invoke-WebRequest -Uri "https://get.enterprisedb.com/postgresql/postgresql-13.3-2-windows-x64.exe" -OutFile "postgresql-installer.exe"
+#        shell: pwsh
 
       - name: Install PostgreSQL
         run: |
-          .\postgresql-installer.exe --mode unattended --unattendedmodeui none --superpassword "geodb_pass" --serverport 5432 --install_runtimes 1
+#          .\postgresql-installer.exe --mode unattended --unattendedmodeui none --superpassword "geodb_pass" --serverport 5432 --install_runtimes 1
           dir "C:\Program Files"
           dir "C:\Program Files\PostgreSQL"
-          dir "C:\Program Files\PostgreSQL\13"
-          dir "C:\Program Files\PostgreSQL\13\bin"
+          dir "C:\Program Files\PostgreSQL\14"
+          dir "C:\Program Files\PostgreSQL\14\bin"
 
       - name: Setup Database and User
         run: |
