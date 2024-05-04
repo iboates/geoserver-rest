@@ -41,6 +41,14 @@ jobs:
           pip install -r requirements_dev.txt
         shell: pwsh
 
+      - name: Configure docker to work with Linux containers
+        run: |
+          $dockerSettingsPath = "$env:APPDATA\Docker\settings.json"
+          $settings = Get-Content -Path $dockerSettingsPath | ConvertFrom-Json
+          $settings.useLinuxContainersOnWindows = $true
+          $settings | ConvertTo-Json | Set-Content -Path $dockerSettingsPath
+          Restart-Service com.docker.service
+
       - name: Test on ${{ matrix.os }}
         run: |
           set DB_HOST=postgis
