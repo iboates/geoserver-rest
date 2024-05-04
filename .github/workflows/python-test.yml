@@ -2,9 +2,9 @@ name: Test on Linux (Ubuntu)
 
 on:
   push:
-    branches: [ "master", "tests" ]
+    branches: [ ]
   pull_request:
-    branches: [ "master", "tests" ]
+    branches: [ ]
 
 permissions:
   contents: read
