@@ -30,10 +30,10 @@ jobs:
 
       - name: Setup Database and User
         run: |
-          psql -U postgres -c "CREATE DATABASE geodb;"
-          psql -U postgres -c "CREATE USER geodb_user WITH ENCRYPTED PASSWORD 'geodb_pass';"
-          psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE yourDatabaseName TO geodb_user;"
-          psql -U postgres -d yourDatabaseName -c "CREATE EXTENSION postgis;"
+          psql.exe -U postgres -c "CREATE DATABASE geodb;"
+          psql.exe -U postgres -c "CREATE USER geodb_user WITH ENCRYPTED PASSWORD 'geodb_pass';"
+          psql.exe -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE yourDatabaseName TO geodb_user;"
+          psql.exe -U postgres -d geodb -c "CREATE EXTENSION postgis;"
 
       - name: Set up GeoServer
         run: |
