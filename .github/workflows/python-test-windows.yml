@@ -55,7 +55,7 @@ jobs:
           $env:CATALINA_HOME = "C:\Tomcat"
           $env:CATALINA_TMPDIR = "C:\Tomcat\temp"
           C:\Tomcat\bin\startup.sh
-          Start-Sleep -Seconds 30
+          Start-Sleep -Seconds 300
           
           # Verify Something is on port 8080
           Get-NetTCPConnection | Where-Object { $_.LocalPort -eq 8080 }
