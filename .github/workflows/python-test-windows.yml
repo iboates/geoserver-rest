@@ -54,8 +54,9 @@ jobs:
           $env:CATALINA_BASE = "C:\Tomcat"
           $env:CATALINA_HOME = "C:\Tomcat"
           $env:CATALINA_TMPDIR = "C:\Tomcat\temp"
-          C:\Tomcat\bin\startup.sh
-          Start-Sleep -Seconds 300
+          C:\Tomcat\bin\startup.bat
+          Start-Sleep -Seconds 30
+          Get-NetTCPConnection | Where-Object State -eq 'Listen' | ForEach-Object { $Process = Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue; if ($Process) { [PSCustomObject]@{ProcessName = $Process.Name; PID = $Process.Id; Port = $_.LocalPort; IPAddress = $_.LocalAddress} } } | Format-Table -AutoSize
           
           # Verify Something is on port 8080
           Get-NetTCPConnection | Where-Object { $_.LocalPort -eq 8080 }
