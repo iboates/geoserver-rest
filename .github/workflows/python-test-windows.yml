@@ -23,16 +23,20 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install dependencies
+      - name: Install Miniconda
         run: |
           curl -O https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-Windows-x86_64.exe
-          $installerPath = "./Miniconda3-py39_4.10.3-Windows-x86_64.exe"
-          Start-Process -FilePath $installerPath -ArgumentList '/InstallationType=JustMe /RegisterPython=0 /S /D="%UserProfile%\Miniconda3"' -Wait -NoNewWindow
-          & "$env:UserProfile\Miniconda3\Scripts\conda" init
-          conda update conda
-          conda create -n geospatial python=3.10
+          Start-Process -FilePath "Miniconda3-py39_4.10.3-Windows-x86_64.exe" -ArgumentList '/InstallationType=JustMe /RegisterPython=0 /S /D="%UserProfile%\Miniconda3"' -Wait -NoNewWindow
+          & "$env:UserProfile\Miniconda3\Scripts\conda" init PowerShell
+        shell: pwsh
+
+      - name: Configure Conda environment
+        run: |
+          $env:PATH = "$env:UserProfile\Miniconda3;$env:UserProfile\Miniconda3\Scripts;$env:UserProfile\Miniconda3\Library\bin;$env:PATH"
+          conda update conda -y
+          conda create -n geospatial python=3.10 -y
           conda activate geospatial
-          conda install -c conda-forge gdal>=3.4.1
+          conda install -c conda-forge gdal>=3.4.1 -y
           python -m pip install --upgrade pip
           pip install -r requirements_dev.txt
         shell: pwsh
