@@ -30,7 +30,7 @@ jobs:
 
       - name: Set up GeoServer
         run: |
-          curl -L -O geoserver.zip "https://downloads.sourceforge.net/project/geoserver/GeoServer/2.25.0/geoserver-2.25.0-war.zip?ts=gAAAAABmNhwxdBzV8wgRckU-o-jH1J9-Cvfy0uqbYigPiQl4zsygZQfLnod-kdP9ulbiFnJoLkQze5RpuroqVY4jgSk9CaK0TA%3D%3D&use_mirror=deac-fra&r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fgeoserver%2F"
+          wget -O geoserver.zip https://sourceforge.net/projects/geoserver/files/GeoServer/2.25.0/geoserver-2.25.0-war.zip/download
           Expand-Archive -Path geoserver.zip -DestinationPath "C:\GeoServer"
           java -jar "C:\GeoServer\webapps\geoserver\WEB-INF\lib\start.jar"
         shell: pwsh
