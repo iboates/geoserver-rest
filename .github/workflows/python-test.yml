@@ -32,7 +32,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements_dev.txt
 
-    - name: Test with pytest
+    - name: Set up docker-compose
       run: |
         export DB_HOST=postgis
         docker compose -f tests/docker-compose.yaml up -d
@@ -115,7 +115,7 @@ jobs:
           pip install -r requirements_dev.txt
         shell: pwsh
 
-      - name: Run pytest
+      - name: Prepare for testing
         run: |
           set DB_HOST=localhost
           conda activate geospatial
