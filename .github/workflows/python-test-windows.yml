@@ -31,6 +31,7 @@ jobs:
       - name: Set up Tomcat/GeoServer
         run: |
           netsh advfirewall firewall add rule name="Allow Localhost 8080" dir=in action=allow protocol=TCP localport=8080
+          netsh advfirewall firewall show rule name="Allow Localhost 8080"
           
           curl -L https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.23/bin/apache-tomcat-10.1.23-windows-x64.zip -o tomcat.zip
           Expand-Archive -Path tomcat.zip -DestinationPath "C:\"
@@ -47,7 +48,9 @@ jobs:
           $env:CATALINA_BASE = "C:\Tomcat"
           $env:CATALINA_HOME = "C:\Tomcat"
           $env:CATALINA_TMPDIR = "C:\Tomcat\temp"
-          C:\Tomcat\bin\startup.bat
+          C:\Tomcat\bin\catalina.bat
+          
+          Get-NetTCPConnection | Where-Object { $_.LocalPort -eq 8080 }
           
           $response = Invoke-WebRequest -Uri "http://localhost:8080"
           Write-Output $response.Content
