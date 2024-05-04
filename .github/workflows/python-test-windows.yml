@@ -62,6 +62,9 @@ jobs:
           Get-NetTCPConnection | Where-Object { $_.LocalPort -eq 8080 }
           $response = Invoke-WebRequest -Uri "http://localhost:8080"
           Write-Output $response.Content
+          
+          Get-Content catalina.out -Tail 100 -Wait
+          
           $response = Invoke-WebRequest -Uri "http://localhost:8080/geoserver"
           Write-Output $response.Content
 
