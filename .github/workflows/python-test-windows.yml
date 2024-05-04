@@ -33,7 +33,7 @@ jobs:
           curl -L https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.23/bin/apache-tomcat-10.1.23-windows-x64.zip -o tomcat.zip
           Expand-Archive -Path tomcat.zip -DestinationPath "C:\"
           
-          $directory = Get-ChildItem -Path "C:\path\to\search\directory" -Directory | Where-Object { $_.Name -like "*apache-tomcat*" } | Select-Object -First 1
+          $directory = Get-ChildItem -Path "C:\" -Directory | Where-Object { $_.Name -like "*apache-tomcat*" } | Select-Object -First 1
           if ($directory) { Rename-Item -Path $directory.FullName -NewName "Tomcat" }
 
           dir C:\Tomcat
