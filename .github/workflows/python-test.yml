@@ -45,6 +45,13 @@ jobs:
       env:
         DB_HOST: postgis
 
+    - name: Upload test summary
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-summary-linux
+        path: test-summary-linux.md
+      if: always()
+
   test-windows:
 
     runs-on: windows-latest
@@ -115,12 +122,16 @@ jobs:
           pip install -r requirements_dev.txt
         shell: pwsh
 
-      - name: Prepare for testing
-        run: |
-          set DB_HOST=localhost
-          conda activate geospatial
-
       - name: Test with pytest
         uses: dariocurr/pytest-summary@main
         with:
           paths: tests/**.py
+        env:
+          DB_HOST: postgis
+
+      - name: Upload test summary
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-summary-windows
+          path: test-summary-windows.md
+        if: always()
