@@ -32,7 +32,6 @@ jobs:
         pip install GDAL==`gdal-config --version` 
         python -m pip install --upgrade pip
         pip install -r requirements_dev.txt
-        export DB_HOST=postgis
 
     - name: Set up docker-compose
       run: |
@@ -43,6 +42,8 @@ jobs:
       uses: dariocurr/pytest-summary@main
       with:
         paths: tests/**.py
+      env:
+        DB_HOST: postgis
 
   test-windows:
 
