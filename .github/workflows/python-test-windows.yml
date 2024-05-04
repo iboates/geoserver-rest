@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Database and User
+      - name: Set up PostGIS
         run: |
           Invoke-WebRequest -Uri "http://download.osgeo.org/postgis/windows/pg14/postgis-bundle-pg14x64-setup-3.4.1-1.exe" -OutFile "postgis-installer.exe"
           Start-Process "postgis-installer.exe" -ArgumentList "/S /D=C:\Program Files\PostgreSQL\14" -Wait -NoNewWindow
@@ -28,11 +28,10 @@ jobs:
           & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE geodb TO geodb_user;"
           & "C:\Program Files\PostgreSQL\14\bin\psql.exe" -U postgres -d geodb -c "CREATE EXTENSION postgis;"
 
-      - name: Set up GeoServer
+      - name: Set up Tomcat/GeoServer
         run: |
           curl -L https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.23/bin/apache-tomcat-10.1.23-windows-x64.zip -o tomcat.zip
           Expand-Archive -Path tomcat.zip -DestinationPath "C:\"
-          for /d %i in ("C:\*apache-tomcat*") do (ren "%i" "Tomcat" & exit)
           
           $directory = Get-ChildItem -Path "C:\path\to\search\directory" -Directory | Where-Object { $_.Name -like "*apache-tomcat*" } | Select-Object -First 1
           if ($directory) { Rename-Item -Path $directory.FullName -NewName "Tomcat" }
