@@ -23,8 +23,6 @@ jobs:
       with:
         python-version: '3.10'
 
-    - uses: dariocurr/pytest-summary@main
-
     - name: Install dependencies
       run: |
         sudo apt-add-repository ppa:ubuntugis/ubuntugis-unstable
@@ -39,7 +37,11 @@ jobs:
         export DB_HOST=postgis
         docker compose -f tests/docker-compose.yaml up -d
         sleep 60  # Geoserver takes quite a long time to boot up and there is no healthcheck
-        pytest ./tests
+
+    - name: Test with pytest
+      uses: dariocurr/pytest-summary@main
+      with:
+        paths: tests/**.py
 
   test-windows:
 
@@ -117,4 +119,8 @@ jobs:
         run: |
           set DB_HOST=localhost
           conda activate geospatial
-          pytest ./tests
+
+      - name: Test with pytest
+        uses: dariocurr/pytest-summary@main
+        with:
+          paths: tests/**.py
