@@ -18,6 +18,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Download PostgreSQL Installer
+        run: |
+          Invoke-WebRequest -Uri "https://get.enterprisedb.com/postgresql/postgresql-13.3-2-windows-x64.exe" -OutFile "postgresql-installer.exe"
+        shell: pwsh
+
+      - name: Install PostgreSQL
+        run: |
+          .\postgresql-installer.exe --mode unattended --unattendedmodeui none --superpassword "geodb_pass" --serverport 5432 --install_runtimes 1 --prefix "C:\Program Files\PostgreSQL\13"
+          setx PATH "%PATH%;C:\Program Files\PostgreSQL\13\bin"
+
+      - name: Setup Database and User
+        run: |
+          & "psql.exe" -U postgres -c "CREATE DATABASE geodb;"
+          & "psql.exe" -U postgres -c "CREATE USER geodb_user WITH ENCRYPTED PASSWORD 'geodb_pass';"
+          & "psql.exe" -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE yourDatabaseName TO geodb_user;"
+          & "psql.exe" -U postgres -d yourDatabaseName -c "CREATE EXTENSION postgis;"
+
+      - name: Set up GeoServer
+        run: |
+          Invoke-WebRequest -Uri "https://sourceforge.net/projects/geoserver/files/GeoServer/2.18.2/geoserver-2.18.2-war.zip" -OutFile "geoserver.zip"
+          Expand-Archive -Path geoserver.zip -DestinationPath "C:\GeoServer"
+          java -jar "C:\GeoServer\webapps\geoserver\WEB-INF\lib\start.jar"
+        shell: pwsh
+
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
         with:
@@ -39,30 +63,6 @@ jobs:
           conda install -c conda-forge gdal>=3.4.1 -y
           python -m pip install --upgrade pip
           pip install -r requirements_dev.txt
-        shell: pwsh
-
-      - name: Download PostgreSQL Installer
-        run: |
-          Invoke-WebRequest -Uri "https://get.enterprisedb.com/postgresql/postgresql-13.3-2-windows-x64.exe" -OutFile "postgresql-installer.exe"
-        shell: pwsh
-
-      - name: Install PostgreSQL
-        run: |
-          .\postgresql-installer.exe --mode unattended --unattendedmodeui none --superpassword "geodb_pass" --serverport 5432 --install_runtimes 1 --prefix "C:\Program Files\PostgreSQL\13"
-          setx PATH "%PATH%;C:\Program Files\PostgreSQL\13\bin"
-
-      - name: Setup Database and User
-        run: |
-          & "C:\Program Files\PostgreSQL\13\bin\psql.exe" -U postgres -c "CREATE DATABASE geodb;"
-          & "C:\Program Files\PostgreSQL\13\bin\psql.exe" -U postgres -c "CREATE USER geodb_user WITH ENCRYPTED PASSWORD 'geodb_pass';"
-          & "C:\Program Files\PostgreSQL\13\bin\psql.exe" -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE yourDatabaseName TO geodb_user;"
-          & "C:\Program Files\PostgreSQL\13\bin\psql.exe" -U postgres -d yourDatabaseName -c "CREATE EXTENSION postgis;"
-
-      - name: Set up GeoServer
-        run: |
-          Invoke-WebRequest -Uri "https://sourceforge.net/projects/geoserver/files/GeoServer/2.18.2/geoserver-2.18.2-war.zip" -OutFile "geoserver.zip"
-          Expand-Archive -Path geoserver.zip -DestinationPath "C:\GeoServer"
-          java -jar "C:\GeoServer\webapps\geoserver\WEB-INF\lib\start.jar"
         shell: pwsh
 
       - name: Test on ${{ matrix.os }}
