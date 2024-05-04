@@ -63,7 +63,7 @@ jobs:
           $response = Invoke-WebRequest -Uri "http://localhost:8080"
           Write-Output $response.Content
           
-          Get-Content catalina.out -Tail 100 -Wait
+          Get-Content C:\Tomcat\logs\catalina.out -Tail 100 -Wait
           
           $response = Invoke-WebRequest -Uri "http://localhost:8080/geoserver"
           Write-Output $response.Content
