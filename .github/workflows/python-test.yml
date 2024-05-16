@@ -122,12 +122,17 @@ jobs:
           pip install -r requirements_dev.txt
         shell: pwsh
 
+      #- name: Test with pytest
+      #  uses: dariocurr/pytest-summary@main
+      #  with:
+      #    paths: tests/test_geoserver.py
+      #  env:
+      #    DB_HOST: postgis
+
       - name: Test with pytest
-        uses: dariocurr/pytest-summary@main
-        with:
-          paths: tests/test_geoserver.py
-        env:
-          DB_HOST: postgis
+        run: |
+          conda activate geospatial
+          pytest tests/test_geoserver.py
 
       - name: Upload test summary
         uses: actions/upload-artifact@v3
